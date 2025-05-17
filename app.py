@@ -77,27 +77,17 @@ def Mom_generation(prompt):
 async def process_video_url(request: VideoURLRequest):
     video_file = f"video_{uuid.uuid4()}.mp4"
     try:
-        # Download video from URL
         await download_video(request.video_url, video_file)
-
-        # Extract audio from video
         audio_file = video_to_audio(video_file)
-
-        # Transcribe audio
         transcript = audio_to_transcript(audio_file)
-
-        # Generate summary
         summary = Mom_generation(transcript)
 
-        # Clean up temp files
         os.remove(video_file)
         os.remove(audio_file)
 
-        # Format response for HTML
         html_result = summary.replace("\n", "<br>")
         return {"response": html_result}
     except Exception as e:
-        # Remove files if exist on failure
         if os.path.exists(video_file):
             os.remove(video_file)
         return {"error": str(e)}
