@@ -9,7 +9,7 @@ import aiofiles
 import json
 
 load_dotenv()
-client = OpenAI()
+client = OpenAI() 
 model  = whisper.load_model("base")
 
 app = FastAPI()
